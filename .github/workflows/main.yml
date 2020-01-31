@@ -1,0 +1,21 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: apt-get update -y && apt-get install -y wget tar git make p7zip-full squashfs-tools parted device-tree-compiler vim build-essential bison flex libssl-dev bc udev
+    - name: Run the build script
+      run: |
+        cd $GITHUB_WORKSPACE
+        bash buildme.sh
+    - uses: actions/upload-artifact@v1.0.0
+      with:
+        name: image
+        path: image.img
